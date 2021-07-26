@@ -1,0 +1,31 @@
+### CREATE A CHAT
+POST http://localhost:3333/api/v1/chats
+Accept: application/json
+Content-Type: application/json
+
+{
+  "sender": "+6288888888",
+  "receiver": "+6288888889",
+  "body": "belajar"
+}
+
+### GET A CHAT
+GET http://localhost:3333/api/v1/chats/sas
+Accept: application/json
+
+### GET ALL CHAT
+GET http://localhost:3333/api/v1/chats
+Accept: application/json
+
+### UPDATE A CHAT
+PUT http://localhost:3333/api/v1/chats/1
+Accept: application/json
+Content-Type: application/json
+
+{
+   "body": "sasasa"
+}
+
+### DELETE A CHAT
+DELETE http://localhost:3333/api/v1/chats/1
+Accept: application/json
