@@ -35,7 +35,6 @@ func StartApp() {
 	port := os.Getenv("PORT")
 	httpRateLimitRequest := os.Getenv("HTTP_RATE_LIMIT_REQUEST")
 	httpRateLimitTime := os.Getenv("HTTP_RATE_LIMIT_TIME")
-
 	limitRequest, _ := strconv.Atoi(httpRateLimitRequest)
 	limitTime, _ := time.ParseDuration(httpRateLimitTime)
 
@@ -47,24 +46,19 @@ func StartApp() {
 	router.Use(chimiddleware.Recoverer)
 
 	routes(router)
-	run()
+	run(":3333")
 }
 
-func run() {
+func run(addr string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	httpServer := &http.Server{
-		Addr:        ":3333",
+		Addr:        addr,
 		Handler:     router,
 		BaseContext: func(_ net.Listener) context.Context { return ctx },
 	}
 
-	// if your BaseContext is more complex you might want to use this instead of doing it manually
-	// httpServer.RegisterOnShutdown(cancel)
-
-	// Run server
 	go func() {
 		if err := httpServer.ListenAndServe(); err != http.ErrServerClosed {
-			// it is fine to use Fatal here because it is not main gorutine
 			log.Fatalf("HTTP server ListenAndServe: %v", err)
 		}
 	}()
@@ -97,7 +91,6 @@ func run() {
 		log.Printf("gracefully stopped\n")
 	}
 
-	// manually cancel context if not using httpServer.RegisterOnShutdown(cancel)
 	cancel()
 
 	defer os.Exit(0)

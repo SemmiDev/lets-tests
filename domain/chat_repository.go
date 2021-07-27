@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	queryInsertChat  = `INSERT INTO chats(id, sender, receiver, body, created_at) VALUES (?,?,?,?);`
+	queryInsertChat  = `INSERT INTO chats(sender, receiver, body, created_at) VALUES (?,?,?,?);`
 	queryGetChat     = `SELECT id, sender, receiver, body, created_at FROM chats WHERE id=?;`
 	queryUpdateChat  = `UPDATE chats SET body=? WHERE id=?;`
 	queryDeleteChat  = `DELETE FROM chats WHERE id=?;`
@@ -62,10 +62,12 @@ func (m *chatRepo) Create(msg *Chat) (*Chat, ChatErr) {
 		return nil, ErrorKind(InternalServerError, fmt.Sprintf("error when trying to prepare user to save: %s", err.Error()))
 	}
 	defer stmt.Close()
+
 	insertResult, createErr := stmt.Exec(msg.Sender, msg.Receiver, msg.Body, msg.CreatedAt)
 	if createErr != nil {
 		return nil, ParseError(createErr)
 	}
+
 	msgId, err := insertResult.LastInsertId()
 	if err != nil {
 		return nil, ErrorKind(InternalServerError, fmt.Sprintf("error when trying to save chat: %s", err.Error()))

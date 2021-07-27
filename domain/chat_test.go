@@ -88,6 +88,61 @@ func TestMessageRepo_Get(t *testing.T) {
 	}
 }
 
+//
+//func TestChatRepo_Create(t *testing.T) {
+//	db, mock, err := sqlmock.New()
+//	if err != nil {
+//		t.Fatalf("an error '%s' was not expected when opening a stub database", err)
+//	}
+//	defer db.Close()
+//	s := NewChatRepository(db)
+//	tm := time.Now()
+//
+//	tests := []struct {
+//		name    string
+//		s       chatRepoInterface
+//		request *Chat
+//		mock    func()
+//		want    *Chat
+//		wantErr bool
+//	}{
+//		{
+//			name: "OK",
+//			s:    s,
+//			request: &Chat{
+//				Sender:    sender,
+//				Receiver:  receiver,
+//				Body:      body,
+//				CreatedAt: tm,
+//			},
+//			mock: func() {
+//				mock.ExpectPrepare("INSERT INTO chats").ExpectExec().WithArgs("sender", "receiver", "body", tm).WillReturnResult(sqlmock.NewResult(1, 1))
+//			},
+//			want: &Chat{
+//				Id:        1,
+//				Sender:    sender,
+//				Receiver:  receiver,
+//				Body:      body,
+//				CreatedAt: tm,
+//			},
+//		},
+//	}
+//	for _, tt := range tests {
+//		t.Run(tt.name, func(t *testing.T) {
+//			tt.mock()
+//			got, err := tt.s.Create(tt.request)
+//			if (err != nil) != tt.wantErr {
+//				fmt.Println("this is the error message: ", err.Message())
+//				t.Errorf("Create() error = %v, wantErr %v", err, tt.wantErr)
+//				return
+//			}
+//			if err == nil && !reflect.DeepEqual(got, tt.want) {
+//				t.Errorf("Create() = %v, want %v", got, tt.want)
+//			}
+//		})
+//	}
+//}
+
 //When the right number of arguments are passed
 //This test is just to improve coverage
 func TestChatRepo_Initialize(t *testing.T) {
